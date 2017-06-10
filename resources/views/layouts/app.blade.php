@@ -15,6 +15,9 @@
     <link href="{{ asset('vendor/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Bootstrap Core CSS -->
+    <link href="{{ asset('vendor/jqueryui/jquery-ui.min.css') }}" rel="stylesheet">
+
+    <!-- Bootstrap Core CSS -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 
@@ -75,6 +78,23 @@
     <header>
         <div class="container" id="maincontent" tabindex="-1">
 
+            <div class="row" style="text-align: left">
+                <div class="form-group col-md-6">
+                    <select id="testeinput2" class="form-control">
+                        <option>-- Selecione o destino --</option>
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row datepicker">
+                <div class="form-group col-md-3">
+                    <input type="text" placeholder="Partida" class="form-control date">
+                </div>
+                <div class="form-group col-md-3" style="position: relative;">
+                    <input type="text" placeholder="Retorno" class="form-control">
+                </div>
+            </div>
         </div>
     </header>
 
@@ -97,8 +117,25 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('vendor/js/bootstrap.min.js') }}"></script>
 
+    <script src="{{ asset('vendor/bootstrap-datepicker/js/moment.js') }}"></script>
+    <script src="{{ asset('vendor/jqueryui/jquery-ui.min.js') }}"></script>
+
     <!-- Plugin JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <script>
+
+        // $('.date').datetimepicker({
+        //     format: 'DD/MM/YYYY'
+        // });
+
+        $( ".date" ).datepicker({
+        	inline: true
+        });
+
+
+    </script>
+
 
 </body>
 
