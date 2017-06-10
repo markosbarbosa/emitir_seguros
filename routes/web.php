@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'SegurosController@index')->name('seguros.index');
+Route::get('/quotation', 'SegurosController@quotation')->name('seguros.quotation');

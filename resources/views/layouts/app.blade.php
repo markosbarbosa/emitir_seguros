@@ -31,50 +31,17 @@
 
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="#" class="navbar-brand">Emitir Seguros</a>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand">Emitir Seguros</a>
+            </div>
         </div>
+    </nav>
+
+    <div class="content">
+    @yield('content')
     </div>
-</nav>
-
-    <!-- Header -->
-        <div class="container" id="maincontent" tabindex="-1">
-
-            <div class="row" style="text-align: left">
-                <div class="form-group col-md-6">
-                    <select id="testeinput2" class="form-control">
-                        <option>-- Selecione o destino --</option>
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3 datepicker">
-                    <div class="input-group">
-                        <input type="text" placeholder="Partida" class="form-control date">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default" aria-label="Help">
-                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-3">
-                    <div class="input-group">
-                        <input type="text" placeholder="Partida" class="form-control date">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default" aria-label="Help">
-                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
     @include('layouts.footer')
 
@@ -86,10 +53,8 @@
     <script src="{{ asset('vendor/js/bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('vendor/jqueryui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('vendor/jqueryui/datepicker-pt-BR.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-
-
-
 
 
 </body>
