@@ -11,4 +11,4 @@
 |
 */
 
-Route::get('/', 'Seguros@index')->name('seguros.index');
+Route::get('/', 'SegurosController@index')->name('seguros.index');
