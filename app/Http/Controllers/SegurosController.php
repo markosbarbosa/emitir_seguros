@@ -21,10 +21,28 @@ class SegurosController extends Controller
 
     public function productShow(Request $request, $id) {
 
+        //Lendo informações da sessão
+        session_start();
+        $destination = $_SESSION['purchase']['destination'];
+        $beginDate = $_SESSION['purchase']['begin_date'];
+        $endDate = $_SESSION['purchase']['end_date'];
+        session_write_close();
+
+        $postData = [
+            'product_code' => $id,
+            'begin_date' => $beginDate,
+            'end_date' => $endDate,
+            'destination' => $destination
+        ];
+
+        //Dados do produto selecionado
+        $response = $this->requestApi('staging.segurospromo.com.br/emitir-seguros/v0/quotations', json_encode($postData));
+        $product = json_decode($response);
+
+        //Detalhes do produto
         $response = $this->requestApi('staging.segurospromo.com.br/emitir-seguros/v0/products/'.$id);
 
         $productDetails = json_decode($response);
-
 
         $byCategory = [];
 
@@ -33,17 +51,16 @@ class SegurosController extends Controller
             $byCategory[$benefit->category_name][] = $benefit;
         }
 
-        session_start();
-        $destination = $_SESSION['purchase']['destination'];
-        $departure = $_SESSION['purchase']['departure'];
-        $return = $_SESSION['purchase']['return'];
-        session_write_close();
+        $departureDate = new \DateTime($beginDate);
+        $returnDate = new \DateTime($endDate);
 
         return view('seguros/product_show', [
+            'adult_price' => number_format($product[0]->adult->price, 2, ',', '.'),
+            'min_max_age' => $product[0]->adult->min_age.' a '.$product[0]->adult->max_age.' anos',
             'provider' => $productDetails->provider_name,
             'destination' => $destination,
-            'departure' => $departure,
-            'return' => $return,
+            'departure' => $departureDate->format('d/m/Y'),
+            'return' => $returnDate->format('d/m/Y'),
             'categories' => $byCategory
         ]);
 
@@ -64,7 +81,9 @@ class SegurosController extends Controller
 
         $response = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/quotations', json_encode($postData));
 
-        $products = $this->infoProducts(json_decode($response));
+        $productsList = json_decode($response);
+
+        $products = $this->infoProducts($productsList);
 
 
         $begin_date = new \DateTime($params['begin_date']);
@@ -75,8 +94,8 @@ class SegurosController extends Controller
         session_start();
         $_SESSION['purchase'] = [
             'destination' => $params['destination'],
-            'departure' => $begin_date->format('d/m/Y'),
-            'return' => $end_date->format('d/m/Y')
+            'begin_date' => $begin_date->format('Y-m-d'),
+            'end_date' => $end_date->format('Y-m-d')
         ];
         session_write_close();
 
@@ -97,11 +116,11 @@ class SegurosController extends Controller
      * Busca informaçẽs detalhadas de cada produto
      * @param array $listQuotations Lista de cotações
      */
-    private function infoProducts($listProducts) {
+    private function infoProducts($productsList) {
 
         $products = [];
 
-        foreach ($listProducts as $product) {
+        foreach ($productsList as $product) {
 
             $response = $this->requestApi('staging.segurospromo.com.br/emitir-seguros/v0/products/'.$product->code);
 

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h2>Econtre abaixo as melhores opções de seguro viagem para:</h2>
+<h2>Encontre abaixo as melhores opções de seguro viagem para:</h2>
 
 
 <div id="info-basic" class="row">

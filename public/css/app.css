@@ -14,13 +14,33 @@
     margin-bottom: 15px;
 }
 
-#resumo_compra {
+#resumo-compra {
     width: 100%;
     height: 220px;
     background: #107d4c;
     position: fixed;
     bottom: 0;
     left: 0;
-    padding: 15px;
     color: #fff;
+
+}
+
+#resumo-compra div,
+#resumo-compra h2 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#resumo-compra h2 {
+    padding-left: 30px;
+}
+
+#resumo-compra #adult-price {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#resumo-compra #adult-price span {
+    font-size: 16px;
+    font-weight: normal;
 }

@@ -26,33 +26,42 @@
 
     </div>
 
-    <div id="resumo_compra">
+    <div id="resumo-compra">
         <h2>Resumo da sua compra</h2>
         <div class="row">
             <div class="col-md-9">
                 <div class="row">
-                    <p>
-                        <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-                        Seguradora: {{ $provider }}
-                    </p>
-                    <p>
-                        <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
-                        Destino: {{ $destination }}
-                    </p>
-                    <p>
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Início: {{ $departure }}
-                    </p>
-                    <p>
-                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Término: {{ $return }}
-                    </p>
+                    <div class="col-md-6">
+                        <div>
+                            <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                            Seguradora: {{ $provider }}
+                        </div>
+                        <div>
+                            <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
+                            Destino: {{ $destination }}
+                        </div>
+                        <div>
+                            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                            Faixa de idade: {{ $min_max_age }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div>
+                            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                            Início: {{ $departure }}
+                        </div>
+                        <div>
+                            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                            Término: {{ $return }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <p>
+                <div>
+                    <p id="adult-price"><span>R$</span>{{ $adult_price }}</p>
                     <a href="#" class="btn btn-lg btn-warning">Comprar</a>
-                </p>
+                </div>
 
             </div>
 
