@@ -22,15 +22,15 @@ $(function() {
             cellphone: $('#cellphone').val()
         };
 
+        //Provavelmente existe outra forma de fazer isso,
+        //mas eu não conheço uma forma de gerar a url amigável a partir do formulário
+        var params = ['pesquisa'];
 
-        $.ajax({
-            url: '/quotation',
-            dataType: 'json',
-            data: dataSearch,
-            success: function(response) {
-                // console.log();
-            }
-        });
+        params.push($('#destination').val());
+        params.push($.datepicker.formatDate('yy-mm-dd', $('#begin_date').datepicker('getDate')));
+        params.push($.datepicker.formatDate('yy-mm-dd', $('#end_date').datepicker('getDate')));
+
+        window.location = '/products/' + params.join('/');
 
     });
 
