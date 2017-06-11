@@ -12,5 +12,5 @@
 */
 
 Route::get('/', 'SegurosController@index')->name('seguros.index');
-Route::get('/products/pesquisa/{destination}/{begin_date}/{end_date}', 'SegurosController@products')->name('seguros.products');
-Route::get('/product/{id}/', 'SegurosController@productShow')->name('seguros.product.show');
+Route::get('/produtos/pesquisa/{destination}/{begin_date}/{end_date}', 'ProductsController@index')->name('products.index');
+Route::get('/produtos/{id}/', 'ProductsController@show')->name('products.show');

@@ -43,7 +43,7 @@
             <td>{{ $product['medical_expense'] }}</td>
             <td>{{ $product['luggage_insurance'] }}</td>
             <td>{{ $product['adult_price'] }}</td>
-            <td><a href="{{ route('seguros.product.show', $product['product_code']) }}" class="btn btn-success">Selecionar</a></td>
+            <td><a href="{{ route('products.show', $product['product_code']) }}" class="btn btn-success">Selecionar</a></td>
         </tr>
         @endforeach
     </tbody>

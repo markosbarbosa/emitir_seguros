@@ -30,7 +30,7 @@ $(function() {
         params.push($.datepicker.formatDate('yy-mm-dd', $('#begin_date').datepicker('getDate')));
         params.push($.datepicker.formatDate('yy-mm-dd', $('#end_date').datepicker('getDate')));
 
-        window.location = '/products/' + params.join('/');
+        window.location = '/produtos/' + params.join('/');
 
     });
 
