@@ -32,4 +32,70 @@ class Controller extends BaseController
         return curl_exec($ch);
 
     }
+
+
+    /**
+     * Procurar benefícios em uma lista pelo código do benefício
+     *
+     * @param array $benefitsList Lista de benefícios que será usada
+     * @param array $findBenefits Códigos dos benefícios para procurar
+     */
+    protected function findBenefits(array $benefitsList, array $findBenefits) {
+
+        $foundHealthCare = false;
+        $foundLuggageInsurance = false;
+
+        $priceHealthCare = null;
+        $priceLuggageInsurance = null;
+
+
+        $benefits = [];
+
+        //Altera despesas médicas
+        foreach ($benefitsList as $benefit) {
+
+            if(in_array($benefit->code, $findBenefits)) {
+
+                $index = array_search($benefit->code, $findBenefits);
+                $elem = array_splice($findBenefits, $index, 1);
+
+                $benefits[$benefit->code] = $benefit;
+            }
+
+            if(empty($findBenefits)) return $benefits;
+
+        }
+
+    }
+
+    /**
+     * Calcula dias entre 2 datas
+     */
+    protected function calculateDays($begin_date, $end_date) {
+
+        $begin_date = new \DateTime($begin_date);
+        $end_date = new \DateTime($end_date);
+
+        return $begin_date->diff($end_date)->days + 1;
+
+    }
+
+    /**
+     * Converte data para o formato yyyy-mm-dd
+     */
+    protected function dateToTimestamp($date) {
+
+        $dateArray = explode('/', $date);
+
+        return $dateArray[2].'-'.$dateArray[1].'-'.$dateArray[0];
+
+    }
+
+    /**
+     * Retira tudo que não é número
+     */
+    protected function clearNumber($number) {
+        return preg_replace('/[^0-9]/', '', $number);
+    }
+
 }

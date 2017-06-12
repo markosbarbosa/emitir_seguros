@@ -16,11 +16,11 @@
     </div>
     <div class="col-md-3">
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-        Saída: {{ $departure }}
+        Saída: {{ date('d/m/Y', strtotime($departure)) }}
     </div>
     <div class="col-md-3">
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-        Retorno: {{ $return }}
+        Retorno: {{ date('d/m/Y', strtotime($return)) }}
     </div>
 </div>
 
@@ -43,10 +43,25 @@
             <td>{{ $product['medical_expense'] }}</td>
             <td>{{ $product['luggage_insurance'] }}</td>
             <td>{{ $product['adult_price'] }}</td>
-            <td><a href="{{ route('products.show', $product['product_code']) }}" class="btn btn-success">Selecionar</a></td>
+
+            <?php
+
+            $product_code = $product['product_code'];
+            $params = [
+                'id' => $product_code,
+                'destination' => $destination,
+                'begin_date' => $departure,
+                'end_date' => $return
+            ];
+
+            ?>
+
+            <td><a href="{{ route('products.show', $params) }}" class="btn btn-success">Selecionar</a></td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
+<button onclick="window.history.back()" class="btn btn-warning"><< Voltar</button>
 
 @endsection

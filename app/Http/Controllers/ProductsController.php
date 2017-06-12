@@ -8,55 +8,6 @@ use Route;
 class ProductsController extends Controller
 {
 
-
-    public function show(Request $request, $id)
-    {
-
-        //Lendo informações da sessão
-        session_start();
-        $destination = $_SESSION['purchase']['destination'];
-        $beginDate = $_SESSION['purchase']['begin_date'];
-        $endDate = $_SESSION['purchase']['end_date'];
-        session_write_close();
-
-        $postData = [
-            'product_code' => $id,
-            'begin_date' => $beginDate,
-            'end_date' => $endDate,
-            'destination' => $destination
-        ];
-
-        //Dados do produto selecionado
-        $response = $this->requestApi('staging.segurospromo.com.br/emitir-seguros/v0/quotations', json_encode($postData));
-        $product = json_decode($response);
-
-        //Detalhes do produto
-        $response = $this->requestApi('staging.segurospromo.com.br/emitir-seguros/v0/products/'.$id);
-
-        $productDetails = json_decode($response);
-
-        $byCategory = [];
-
-
-        foreach ($productDetails->benefits as $benefit) {
-            $byCategory[$benefit->category_name][] = $benefit;
-        }
-
-        $departureDate = new \DateTime($beginDate);
-        $returnDate = new \DateTime($endDate);
-
-        return view('products/show', [
-            'adult_price' => number_format($product[0]->adult->price, 2, ',', '.'),
-            'min_max_age' => $product[0]->adult->min_age.' a '.$product[0]->adult->max_age.' anos',
-            'provider' => $productDetails->provider_name,
-            'destination' => $destination,
-            'departure' => $departureDate->format('d/m/Y'),
-            'return' => $returnDate->format('d/m/Y'),
-            'categories' => $byCategory
-        ]);
-
-    }
-
     public function index(Request $request)
     {
 
@@ -75,31 +26,66 @@ class ProductsController extends Controller
 
         $products = $this->infoProducts($productsList);
 
-
-        $begin_date = new \DateTime($params['begin_date']);
-        $end_date = new \DateTime($params['end_date']);
-
-        //Guarda informações na sessão
-        //para ser recuperada em outra página
-        session_start();
-        $_SESSION['purchase'] = [
-            'destination' => $params['destination'],
-            'begin_date' => $begin_date->format('Y-m-d'),
-            'end_date' => $end_date->format('Y-m-d')
-        ];
-        session_write_close();
-
+        $total_days = $this->calculateDays($params['begin_date'], $params['end_date']);
 
         return view('products/index', [
             'destination' => $params['destination'],
-            'total_days' => ($begin_date->diff($end_date)->days + 1),
-            'departure' => $begin_date->format('d/m/Y'),
-            'return' => $end_date->format('d/m/Y'),
+            'total_days' => $total_days,
+            'departure' => $params['begin_date'],
+            'return' => $params['end_date'],
             'products' => $products
         ]);
 
     }
 
+
+    public function show(Request $request, $id)
+    {
+
+        $params = Route::current()->parameters();
+
+        $destination = $params['destination'];
+        $beginDate = $params['begin_date'];
+        $endDate = $params['end_date'];
+
+        $postData = [
+            'product_code' => $id,
+            'begin_date' => $beginDate,
+            'end_date' => $endDate,
+            'destination' => $destination
+        ];
+
+        //Dados do produto selecionado
+        $response = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/quotations', json_encode($postData));
+        $product = json_decode($response);
+
+        //Detalhes do produto
+        $response = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/products/'.$id);
+
+        $productDetails = json_decode($response);
+
+        $byCategory = [];
+
+
+        foreach ($productDetails->benefits as $benefit) {
+            $byCategory[$benefit->category_name][] = $benefit;
+        }
+
+        $departureDate = new \DateTime($beginDate);
+        $returnDate = new \DateTime($endDate);
+
+        return view('products/show', [
+            'product_code' => $id,
+            'adult_price' => number_format($product[0]->adult->price, 2, ',', '.'),
+            'min_max_age' => $product[0]->adult->min_age.' a '.$product[0]->adult->max_age.' anos',
+            'provider' => $productDetails->provider_name,
+            'destination' => $destination,
+            'departure' => $beginDate,
+            'return' => $endDate,
+            'categories' => $byCategory
+        ]);
+
+    }
 
 
     /**
@@ -113,7 +99,7 @@ class ProductsController extends Controller
 
         foreach ($productsList as $product) {
 
-            $response = $this->requestApi('staging.segurospromo.com.br/emitir-seguros/v0/products/'.$product->code);
+            $response = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/products/'.$product->code);
 
             $details = json_decode($response);
 

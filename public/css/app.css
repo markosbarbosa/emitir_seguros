@@ -36,11 +36,63 @@
 }
 
 #resumo-compra #adult-price {
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
 }
 
 #resumo-compra #adult-price span {
     font-size: 16px;
     font-weight: normal;
+}
+
+ul.topics {
+    padding: 0;
+}
+
+.topics li {
+    list-style: none;
+    margin: 0;
+}
+
+#total-order {
+    position: relative;
+    font-size: 23px;
+    font-weight: bold;
+    color: #F2AE43;
+}
+
+#total-order div {
+    display: inline-block;
+}
+
+#total-order #right {
+    position: absolute;
+    right: 0;
+}
+
+footer {
+    background-color: #107d4c;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    color: #fff;
+    line-height: 350%;
+}
+
+nav #topo {
+    background-color: #107d4c;
+}
+
+nav #topo a {
+    color: #fff;
+}
+
+.breadcrumb {
+    font-size: 16px;
+}
+
+.panel-heading {
+    background: #485262 !important;
+    color: #fff !important;
 }

@@ -22,8 +22,9 @@
 
     @endforeach
 
-    <div style="height: 300px;">
+    <button onclick="window.history.back()" class="btn btn-warning" style="margin-top: 20px;"><< Voltar</button>
 
+    <div style="height: 300px;">
     </div>
 
     <div id="resumo-compra">
@@ -42,30 +43,44 @@
                         </div>
                         <div>
                             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                            Faixa de idade: {{ $min_max_age }}
+                            Idade: limite de {{ $min_max_age }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div>
                             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                            Início: {{ $departure }}
+                            Início: {{ date('d/m/Y', strtotime($departure)) }}
                         </div>
                         <div>
                             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                            Término: {{ $return }}
+                            Término: {{ date('d/m/Y', strtotime($return)) }}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
+
+                <?php
+
+                $params = [
+                    'id' => $product_code,
+                    'destination' => $destination,
+                    'begin_date' => $departure,
+                    'end_date' => $return
+                ];
+
+                ?>
+
                 <div>
                     <p id="adult-price"><span>R$</span>{{ $adult_price }}</p>
-                    <a href="#" class="btn btn-lg btn-warning">Comprar</a>
+                    <a href="{{ route('purchases.create', $params) }}" class="btn btn-lg btn-warning">Comprar</a>
                 </div>
 
             </div>
 
         </div>
     </div>
+
+
 
 @endsection
