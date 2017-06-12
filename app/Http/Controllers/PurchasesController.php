@@ -129,8 +129,79 @@ class PurchasesController extends Controller
         ];
 
 
-        DB::transaction(function()
-            use ($dataPurchase, $dataInsureds, $dataCreditcard, $dataPurchaseContact, $request, $quotation) {
+        $return = null;
+
+        // DB::transaction(function()
+        //     use ($dataPurchase, $dataInsureds, $dataCreditcard, $dataPurchaseContact, $request, $quotation, $return) {
+        //
+        //     $purchase = Purchase::create($dataPurchase);
+        //
+        //
+        //     $insuredsRepository = [];
+        //
+        //     //Segurados
+        //     foreach ($dataInsureds as $insured) {
+        //
+        //         $insured['purchases_id'] = $purchase->id;
+        //         $insuredsRepository[] = Insured::create($insured);
+        //
+        //     }
+        //
+        //     $dataCreditcard['purchases_id'] = $purchase->id;
+        //     Creditcard::create($dataCreditcard);
+        //
+        //     $dataPurchaseContact['purchases_id'] = $purchase->id;
+        //     PurchaseContact::create($dataPurchaseContact);
+        //
+        //     //Dados para cadastro na api
+        //     $dataPurchaseApi = [
+        //         'merchant_purchase_id' => (string) $purchase->id,
+        //         'product_code' => $request->input('product_code'),
+        //         'destination' => $request->input('destination'),
+        //         'coverage_begin' => $request->input('begin_coverage'),
+        //         'coverage_end' => $request->input('end_coverage'),
+        //         'payment_method' => $request->input('payment_method'),
+        //         'price' => $quotation[0]->adult->price,
+        //         'parcels' => 1,
+        //         'holder' => [
+        //             'full_name' => $request->input('creditcard_name'),
+        //             'cpf' => $this->clearNumber($request->input('creditcard_document'))
+        //         ],
+        //         'insureds' => [],
+        //         'creditcard' => [
+        //             'expiration_year' => $request->input('creditcard_expiration_year'),
+        //             'expiration_month' => $request->input('creditcard_expiration_month'),
+        //             'cvv' => $request->input('creditcard_expiration_month'),
+        //             'brand' => $request->input('brand_name'),
+        //             'number' => $this->clearNumber($request->input('creditcard_number'))
+        //         ]
+        //     ];
+        //
+        //     foreach ($insuredsRepository as $insured) {
+        //         $dataPurchaseApi['insureds'][] = [
+        //             'merchant_insured_id' => (string) $insured->id,
+        //             'document' => $insured->document,
+        //             'document_type' => $insured->document_type,
+        //             'full_name' => $insured->full_name,
+        //             'birth_date' => $insured->birth_date
+        //         ];
+        //     }
+        //
+        //
+        //     $purchaseReturn = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/purchases', json_encode($dataPurchaseApi));
+        //
+        //
+        //     $return = $purchaseReturn;
+        //
+        //
+        //
+        // });
+
+
+        DB::beginTransaction();
+
+
+        try {
 
             $purchase = Purchase::create($dataPurchase);
 
@@ -185,13 +256,26 @@ class PurchasesController extends Controller
                 ];
             }
 
-
             $return = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/purchases', json_encode($dataPurchaseApi));
 
-        });
+            if(preg_match('/error/', $return) != false) {
+
+                throw new \Exception('Erro ao gravar na api');
+
+            }
+
+            DB::commit();
+
+        } catch(\Exception $ex) {
+
+            DB::rollback();
+
+            return redirect()->route('purchases.end', ['status' => 'error']);
+
+        }
+
 
         return redirect()->route('purchases.end', ['status' => 'success']);
-        // return Redirect::route('purchases.end')->with('status', 'success');
 
     }
 

@@ -22,33 +22,35 @@
                 <div class="panel-heading">Segurados</div>
                 <div class="panel-body">
 
-                        <div class="row">
+                        <div id="insureds-section">
 
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="full_name-0">Nome completo</label>
-                                    <input type="text" id="full_name-0" name="full_name-0" class="form-control" placeholder="Nome do segurado" required>
+                            <div class="row">
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="full_name-0">Nome completo</label>
+                                        <input type="text" id="full_name-0" name="full_name-0" class="form-control" placeholder="Nome do segurado" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="birth_date-0">Nascimento</label>
-                                    <input type="text" id="birth_date-0" name="birth_date-0" class="form-control" placeholder="Nascimento" required>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="birth_date-0">Nascimento</label>
+                                        <input type="text" id="birth_date-0" name="birth_date-0" class="form-control date" placeholder="Nascimento" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="document-0">CPF</label>
-                                    <input type="text" id="document-0" name="document-0" class="form-control" placeholder="Documento do segurado" required>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="document-0">CPF</label>
+                                        <input type="text" id="document-0" name="document-0" class="form-control cpf" placeholder="Documento do segurado" required>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-
                     <hr>
 
                     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                    <a href="#">Adicionar segurados</a>
+                    <a href="#" id="add-insured">Adicionar segurados</a>
 
                 </div>
             </div>
@@ -78,7 +80,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="creditcard_document">CPF</label>
-                            <input type="text" class="form-control" id="creditcard_document" name="creditcard_document" placeholder="CPF" required>
+                            <input type="text" class="form-control cpf" id="creditcard_document" name="creditcard_document" placeholder="CPF" required>
                         </div>
                     </div>
                     <div class="row">
@@ -133,7 +135,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="contact_phone">Telefone</label>
-                            <input type="text" id="contact_phone" name="contact_phone" class="form-control" required>
+                            <input type="text" id="contact_phone" name="contact_phone" class="form-control phone" required>
                         </div>
                     </div>
 
@@ -142,7 +144,7 @@
 
             <div class="row">
                 <div class="col-md-12 form-group" style="margin-bottom: 100px;">
-                    <button onclick="window.history.back()" class="btn btn-warning"><< Voltar</button>
+                    <button type="button" onclick="window.history.back()" class="btn btn-warning"><< Voltar</button>
                     <button type="submit" class="btn btn-success" class="form-control">Efetuar Pagamento</button>
                 </div>
             </div>

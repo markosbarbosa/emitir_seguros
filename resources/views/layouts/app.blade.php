@@ -55,6 +55,8 @@
     <script src="{{ asset('vendor/jqueryui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('vendor/jqueryui/datepicker-pt-BR.js') }}"></script>
     <script src="{{ asset('vendor/js/jquery.payment.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/functions.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 
 

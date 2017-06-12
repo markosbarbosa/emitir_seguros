@@ -22,6 +22,7 @@
 </div>
 @endif
 
+<a href="{{ route('seguros.index') }}" class="btn btn-warning"><< Voltar</a>
 
 
 @endsection

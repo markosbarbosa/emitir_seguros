@@ -46,3 +46,55 @@ $('#creditcard_number').blur(function() {
 $('#begin_date').change(function() {
     $('#end_date').val(this.value);
 });
+
+
+//Máscaras
+$('.cpf').mask('999.999.999-99');
+$('.date').mask('99/99/9999');
+$('.phone').mask('(99) 9999-9999?9');
+
+
+var count = 0;
+
+
+$('#add-insured').click(function(e) {
+
+    e.preventDefault();
+
+    count++;
+
+    //Adicionar segurados
+    var newLine = '';
+    newLine += '<div class="row">';
+    newLine += '    <div class="col-md-5">';
+    newLine += '        <div class="form-group">';
+    newLine += '            <label for="full_name-' + count + '">Nome completo</label>';
+    newLine += '            <input type="text" id="full_name-' + count + '" name="full_name-' + count + '" class="form-control" placeholder="Nome do segurado" required="">';
+    newLine += '        </div>';
+    newLine += '    </div>';
+    newLine += '    <div class="col-md-3">';
+    newLine += '        <div class="form-group">';
+    newLine += '            <label for="birth_date-' + count + '">Nascimento</label>';
+    newLine += '            <input type="text" id="birth_date-' + count + '" name="birth_date-' + count + '" class="form-control date hasDatepicker" placeholder="Nascimento" required="">';
+    newLine += '        </div>';
+    newLine += '    </div>';
+    newLine += '    <div class="col-md-4">';
+    newLine += '        <div class="form-group">';
+    newLine += '            <label for="document-' + count + '">CPF</label>';
+    newLine += '            <input type="text" id="document-' + count + '" name="document-' + count + '" class="form-control cpf" placeholder="Documento do segurado" required="">';
+    newLine += '        </div>';
+    newLine += '    </div>';
+    newLine += '</div>';
+    newLine += '<hr>';
+
+    $('#insureds-section').append($(newLine));
+
+    $('.cpf').off();
+    $('.cpf').mask('999.999.999-99');
+
+});
+
+
+$('#purchase-form').submit(function() {
+    $('#document-*')
+});
