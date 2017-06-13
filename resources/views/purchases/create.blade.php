@@ -97,7 +97,7 @@
                         <div class="col-md-2">
                             <label for="creditcard_expiration_month">Mês validade</label>
                             <select id="creditcard_expiration_month" name="creditcard_expiration_month" class="form-control" required>
-                                <option vlaue="">---</option>
+                                <option vlaue=""></option>
                                 @foreach(range(1, 12) as $month)
                                 <option vlaue="{{ $month }}">{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}</option>
                                 @endforeach
@@ -106,7 +106,7 @@
                         <div class="col-md-2">
                             <label for="creditcard_expiration_year">Ano validade</label>
                             <select id="creditcard_expiration_year" name="creditcard_expiration_year" class="form-control" required>
-                                <option vlaue="">---</option>
+                                <option vlaue=""></option>
                                 <?php $ano_atual = date('Y') ?>
                                 @foreach(range($ano_atual, $ano_atual + 14) as $year)
                                 <option vlaue="{{ $year }}">{{ $year }}</option>
