@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <h3>Detalhes da cobertura</h3>
+
     @foreach($categories as $category_name => $benefits)
     <div class="panel panel-default benefit-category">
         <div class="panel-heading">{{ $category_name }}</div>
