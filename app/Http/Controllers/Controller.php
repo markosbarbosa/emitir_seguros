@@ -66,13 +66,6 @@ class Controller extends BaseController
      */
     protected function findBenefits(array $benefitsList, array $findBenefits) {
 
-        $foundHealthCare = false;
-        $foundLuggageInsurance = false;
-
-        $priceHealthCare = null;
-        $priceLuggageInsurance = null;
-
-
         $benefits = [];
 
         //Altera despesas médicas

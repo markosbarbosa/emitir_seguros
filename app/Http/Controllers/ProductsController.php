@@ -134,7 +134,6 @@ class ProductsController extends Controller
                     $priceLuggageInsurance = $benefit->coverage;
                 }
 
-
                 //Interrompe o loop se já encontrou o preço
                 //da assistência médica e do seguro bagagem
                 if($foundHealthCare && $foundLuggageInsurance) {
