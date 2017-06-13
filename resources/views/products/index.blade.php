@@ -6,19 +6,19 @@
 
 
 <div id="info-basic" class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 bg-primary resume-quotation-top">
         <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
-        Destino: {{ $destination }}
+        Destino: {{ $destination_name }}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 bg-primary resume-quotation-top">
         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
         Total de dias: {{ $total_days }}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 bg-primary resume-quotation-top">
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
         Saída: {{ date('d/m/Y', strtotime($departure)) }}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 bg-primary resume-quotation-top">
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
         Retorno: {{ date('d/m/Y', strtotime($return)) }}
     </div>
@@ -49,7 +49,7 @@
             $product_code = $product['product_code'];
             $params = [
                 'id' => $product_code,
-                'destination' => $destination,
+                'destination' => $destination_slug,
                 'begin_date' => $departure,
                 'end_date' => $return
             ];

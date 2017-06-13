@@ -96,3 +96,12 @@ nav #topo a {
     background: #485262 !important;
     color: #fff !important;
 }
+
+.resume-quotation-top {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.resume-page-purchase li {
+    margin-bottom: 10px;
+}

@@ -16,7 +16,7 @@
         <div class="row">
             <div class="form-group col-md-3 datepicker">
                 <div class="input-group">
-                    <input type="text" id="begin_date" name="begin_date" placeholder="Partida" class="form-control date" required>
+                    <input type="text" id="begin_date" name="begin_date" placeholder="Partida" class="form-control date-destination" required>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" aria-label="Help">
                             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group col-md-3">
                 <div class="input-group">
-                    <input type="text" id="end_date" name="end_date" placeholder="Partida" class="form-control date" required>
+                    <input type="text" id="end_date" name="end_date" placeholder="Partida" class="form-control date-destination" required>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" aria-label="Help">
                             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>

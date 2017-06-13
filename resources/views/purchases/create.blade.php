@@ -12,10 +12,13 @@
             {{ csrf_field() }}
 
             <input type="hidden" name="product_code" value="{{ $product_code }}">
-            <input type="hidden" name="destination" value="{{ $destination }}">
+            <input type="hidden" name="destination" value="{{ $destination_slug }}">
             <input type="hidden" name="begin_coverage" value="{{ $begin_coverage }}">
             <input type="hidden" name="end_coverage" value="{{ $end_coverage }}">
-            <input type="hidden" id="brand_name" name="brand_name" value="teste">
+            <input type="hidden" id="brand_name" name="brand_name">
+
+            <input type="hidden" id="price_day" value="{{ $price_day }}">
+            <input type="hidden" id="price_adult" value="{{ $price_adult }}">
 
             <!-- Dados dos segurados -->
             <div class="panel panel-default">
@@ -23,8 +26,8 @@
                 <div class="panel-body">
 
                         <div id="insureds-section">
-
-                            <div class="row">
+                            <div class="insured-row">
+                                <div class="row">
 
                                 <div class="col-md-5">
                                     <div class="form-group">
@@ -32,7 +35,7 @@
                                         <input type="text" id="full_name-0" name="full_name-0" class="form-control" placeholder="Nome do segurado" required>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="birth_date-0">Nascimento</label>
                                         <input type="text" id="birth_date-0" name="birth_date-0" class="form-control date" placeholder="Nascimento" required>
@@ -45,9 +48,12 @@
                                     </div>
                                 </div>
                             </div>
+                                <hr>
+                            </div>
+
+
                         </div>
 
-                    <hr>
 
                     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                     <a href="#" id="add-insured">Adicionar segurados</a>
@@ -155,7 +161,7 @@
     </div>
     <div class="col-md-4">
 
-        <div class="panel panel-default">
+        <div class="panel panel-default resume-page-purchase">
             <div class="panel-heading">Resumo da Viagem</div>
             <div class="panel-body">
                 <ul class="topics">
@@ -169,19 +175,19 @@
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
-                        Destino: {{ $destination }}
+                        Destino: {{ $destination_name }}
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Início cobertura: {{ $plan }}
+                        Início cobertura: {{ date('d/m/Y', strtotime($begin_coverage)) }}
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                        Fim cobertura: {{ $begin_coverage }}
+                        Fim cobertura: {{ date('d/m/Y', strtotime($end_coverage)) }}
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-                        Investimento por dia: {{ $end_coverage }}
+                        Investimento por dia: R$ <span id="total_day">{{ number_format($price_day, 2, ',', '.') }}</span>
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
@@ -200,7 +206,7 @@
                 <hr>
 
                 <div id="total-order">
-                    <div id="left">Valor total </div><div id="right">{{ $total }}</div>
+                    <div id="left">Valor total </div><div id="right">R$ <span id="total">{{ number_format($price_adult, 2, ',', '.') }}</span></div>
                 </div>
 
 

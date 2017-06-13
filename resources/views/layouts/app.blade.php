@@ -34,7 +34,7 @@
     <nav class="navbar navbar-default">
         <div id="topo" class="container-fluid">
             <div class="navbar-header">
-                <a href="#" class="navbar-brand">Emitir Seguros</a>
+                <a href="{{ route('seguros.index') }}" class="navbar-brand">Emitir Seguros</a>
             </div>
         </div>
     </nav>
@@ -56,6 +56,7 @@
     <script src="{{ asset('vendor/jqueryui/datepicker-pt-BR.js') }}"></script>
     <script src="{{ asset('vendor/js/jquery.payment.min.js') }}"></script>
     <script src="{{ asset('vendor/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/jquery.cpfcnpj.min.js') }}"></script>
     <script src="{{ asset('vendor/js/functions.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 

@@ -12,6 +12,30 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
+
+    /**
+     * Procurar benefícios em uma lista pelo código do benefício
+     *
+     * @param array $selug Slug do destino
+     */
+    protected function getDestinationName($selug) {
+
+        $destinationsList = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/additional-info/destinations');
+        $destinationsList = json_decode($destinationsList);
+
+        //Altera despesas médicas
+        foreach ($destinationsList as $destination) {
+
+            if($destination->slug == $selug) {
+                return $destination->name;
+            }
+
+        }
+
+    }
+
+
+
     /**
      * Helper para fazer requisições na api
      * @param string $url Endereço da requisição

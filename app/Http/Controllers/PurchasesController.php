@@ -34,9 +34,10 @@ class PurchasesController extends Controller
         $product = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/quotations', json_encode($postData));
         $product = json_decode($product);
 
-        $productDetails = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/products/'.$id);
 
+        $productDetails = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/products/'.$id);
         $productDetails = json_decode($productDetails);
+
 
         //Procuro pelos benefícios de código 50 (Despesa Médica Hospitalar Total) e 42 (Seguro bagagem)
         $benefitsFound = $this->findBenefits($productDetails->benefits, array('50', '42'));
@@ -44,18 +45,21 @@ class PurchasesController extends Controller
         $total_days = $this->calculateDays($begin_date, $end_date);
         $price_day = $product[0]->adult->price / $total_days;
 
+        $destination_name = $this->getDestinationName($destination);
+
         return view('purchases/create', [
             'product_code' => $product[0]->code,
             'provider' => $product[0]->provider_name,
             'plan' => $productDetails->name,
-            'destination' => $destination,
+            'destination_slug' => $destination,
+            'destination_name' => $destination_name,
             'begin_coverage' => $begin_date,
             'end_coverage' => $end_date,
             'price_day' => $price_day,
             'min_max_age' => $product[0]->adult->min_age.' a '.$product[0]->adult->max_age.' anos',
             'medical_expense' => $benefitsFound[50]->coverage,
             'baggage_insurance' => $benefitsFound[42]->coverage,
-            'total' => $product[0]->adult->price
+            'price_adult' => $product[0]->adult->price
         ]);
 
     }
@@ -74,7 +78,6 @@ class PurchasesController extends Controller
 
         $quotation = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/quotations', json_encode($postData));
         $quotation = json_decode($quotation);
-
 
         $product = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/products/'.$request->input('product_code'));
         $product = json_decode($product);
@@ -131,75 +134,8 @@ class PurchasesController extends Controller
 
         $return = null;
 
-        // DB::transaction(function()
-        //     use ($dataPurchase, $dataInsureds, $dataCreditcard, $dataPurchaseContact, $request, $quotation, $return) {
-        //
-        //     $purchase = Purchase::create($dataPurchase);
-        //
-        //
-        //     $insuredsRepository = [];
-        //
-        //     //Segurados
-        //     foreach ($dataInsureds as $insured) {
-        //
-        //         $insured['purchases_id'] = $purchase->id;
-        //         $insuredsRepository[] = Insured::create($insured);
-        //
-        //     }
-        //
-        //     $dataCreditcard['purchases_id'] = $purchase->id;
-        //     Creditcard::create($dataCreditcard);
-        //
-        //     $dataPurchaseContact['purchases_id'] = $purchase->id;
-        //     PurchaseContact::create($dataPurchaseContact);
-        //
-        //     //Dados para cadastro na api
-        //     $dataPurchaseApi = [
-        //         'merchant_purchase_id' => (string) $purchase->id,
-        //         'product_code' => $request->input('product_code'),
-        //         'destination' => $request->input('destination'),
-        //         'coverage_begin' => $request->input('begin_coverage'),
-        //         'coverage_end' => $request->input('end_coverage'),
-        //         'payment_method' => $request->input('payment_method'),
-        //         'price' => $quotation[0]->adult->price,
-        //         'parcels' => 1,
-        //         'holder' => [
-        //             'full_name' => $request->input('creditcard_name'),
-        //             'cpf' => $this->clearNumber($request->input('creditcard_document'))
-        //         ],
-        //         'insureds' => [],
-        //         'creditcard' => [
-        //             'expiration_year' => $request->input('creditcard_expiration_year'),
-        //             'expiration_month' => $request->input('creditcard_expiration_month'),
-        //             'cvv' => $request->input('creditcard_expiration_month'),
-        //             'brand' => $request->input('brand_name'),
-        //             'number' => $this->clearNumber($request->input('creditcard_number'))
-        //         ]
-        //     ];
-        //
-        //     foreach ($insuredsRepository as $insured) {
-        //         $dataPurchaseApi['insureds'][] = [
-        //             'merchant_insured_id' => (string) $insured->id,
-        //             'document' => $insured->document,
-        //             'document_type' => $insured->document_type,
-        //             'full_name' => $insured->full_name,
-        //             'birth_date' => $insured->birth_date
-        //         ];
-        //     }
-        //
-        //
-        //     $purchaseReturn = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/purchases', json_encode($dataPurchaseApi));
-        //
-        //
-        //     $return = $purchaseReturn;
-        //
-        //
-        //
-        // });
-
 
         DB::beginTransaction();
-
 
         try {
 
@@ -222,6 +158,7 @@ class PurchasesController extends Controller
             $dataPurchaseContact['purchases_id'] = $purchase->id;
             PurchaseContact::create($dataPurchaseContact);
 
+
             //Dados para cadastro na api
             $dataPurchaseApi = [
                 'merchant_purchase_id' => (string) $purchase->id,
@@ -230,7 +167,7 @@ class PurchasesController extends Controller
                 'coverage_begin' => $request->input('begin_coverage'),
                 'coverage_end' => $request->input('end_coverage'),
                 'payment_method' => $request->input('payment_method'),
-                'price' => $quotation[0]->adult->price,
+                'price' => ($quotation[0]->adult->price * count($dataInsureds)),
                 'parcels' => 1,
                 'holder' => [
                     'full_name' => $request->input('creditcard_name'),
@@ -258,10 +195,10 @@ class PurchasesController extends Controller
 
             $return = $this->requestApi('http://staging.segurospromo.com.br/emitir-seguros/v0/purchases', json_encode($dataPurchaseApi));
 
+
+            //Lança uma exceção caso ocorrar algum erro ao salvar na api
             if(preg_match('/error/', $return) != false) {
-
                 throw new \Exception('Erro ao gravar na api');
-
             }
 
             DB::commit();
@@ -270,11 +207,13 @@ class PurchasesController extends Controller
 
             DB::rollback();
 
+            //Redireciona para página de finalização sinalizando que houve erro
             return redirect()->route('purchases.end', ['status' => 'error']);
 
         }
 
-
+        //Redireciona para página de finalização sinalizando que a compra
+        //foi realizada com sucesso
         return redirect()->route('purchases.end', ['status' => 'success']);
 
     }

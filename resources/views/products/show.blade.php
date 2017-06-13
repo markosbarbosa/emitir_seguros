@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
-                            Destino: {{ $destination }}
+                            Destino: {{ $destination_name }}
                         </div>
                         <div>
                             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
@@ -64,7 +64,7 @@
 
                 $params = [
                     'id' => $product_code,
-                    'destination' => $destination,
+                    'destination' => $destination_slug,
                     'begin_date' => $departure,
                     'end_date' => $return
                 ];

@@ -13,6 +13,7 @@ class ProductsController extends Controller
 
         $params = Route::current()->parameters();
 
+
         $postData = [
             'destination' => $params['destination'],
             'begin_date' => $params['begin_date'],
@@ -28,8 +29,11 @@ class ProductsController extends Controller
 
         $total_days = $this->calculateDays($params['begin_date'], $params['end_date']);
 
+        $destinationName = $this->getDestinationName($params['destination']);
+
         return view('products/index', [
-            'destination' => $params['destination'],
+            'destination_name' => $destinationName,
+            'destination_slug' => $params['destination'],
             'total_days' => $total_days,
             'departure' => $params['begin_date'],
             'return' => $params['end_date'],
@@ -71,6 +75,9 @@ class ProductsController extends Controller
             $byCategory[$benefit->category_name][] = $benefit;
         }
 
+
+        $destinationName = $this->getDestinationName($params['destination']);
+
         $departureDate = new \DateTime($beginDate);
         $returnDate = new \DateTime($endDate);
 
@@ -79,7 +86,8 @@ class ProductsController extends Controller
             'adult_price' => number_format($product[0]->adult->price, 2, ',', '.'),
             'min_max_age' => $product[0]->adult->min_age.' a '.$product[0]->adult->max_age.' anos',
             'provider' => $productDetails->provider_name,
-            'destination' => $destination,
+            'destination_slug' => $destination,
+            'destination_name' => $destinationName,
             'departure' => $beginDate,
             'return' => $endDate,
             'categories' => $byCategory
