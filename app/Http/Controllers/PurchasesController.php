@@ -127,8 +127,8 @@ class PurchasesController extends Controller
         //Dados contato da compra
         $dataPurchaseContact = [
             'full_name' => $request->input('contact_name'),
-            'email' => $request->input('contact_phone'),
-            'phone' => '1233',
+            'email' => $request->input('contact_email'),
+            'phone' => $request->input('contact_phone')
         ];
 
 
